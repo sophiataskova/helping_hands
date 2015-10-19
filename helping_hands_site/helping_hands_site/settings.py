@@ -9,6 +9,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+import os.path
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath('__file__'))
+
 DATABASES = {
     'default': { 
         'ENGINE': 'django.db.backends.mysql', 
@@ -109,6 +113,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/Users/sophiataskova/ITU/ENV/helping_hands/env/helping_hands_site/templates'
 )
 
 INSTALLED_APPS = (
@@ -121,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'helping_hands_app',
     'south',
+    'markdown_deux',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
