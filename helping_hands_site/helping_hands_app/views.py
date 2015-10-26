@@ -1,23 +1,29 @@
-from django.shortcuts import render_to_response, render, get_object_or_404
-from django.template import RequestContext, loader
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import Http404
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.views import generic
 
-from helping_hands_app.models import Event, Choice
+from .models import Choice, Event
 
-def index(request):
-    latest_event_list = Event.objects.all().order_by('-pub_date')[:5]
-    context = {'latest_event_list': latest_event_list}
-    return render(request, 'helping_hands_app/index.html', context)
 
-def detail(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    return render(request, 'helping_hands_app/detail.html', {'event': event})
+class IndexView(generic.ListView):
+    template_name = 'helping_hands_app/index.html'
+    context_object_name = 'latest_event_list'
 
-def results(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    return render(request, 'helping_hands_app/results.html', {'event': event})
+    def get_queryset(self):
+        """Return the last five published events."""
+        return Event.objects.order_by('-pub_date')[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Event
+    template_name = 'helping_hands_app/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Event
+    template_name = 'helping_hands_app/results.html'
+
 
 def vote(request, event_id):
     e = get_object_or_404(Event, pk=event_id)
@@ -25,7 +31,7 @@ def vote(request, event_id):
         selected_choice = e.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the event voting form.
-        return render(request, 'events/detail.html', {
+        return render(request, 'helping_hands_app/detail.html', {
             'event': e,
             'error_message': "You didn't select a choice.",
         })
@@ -35,4 +41,4 @@ def vote(request, event_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse('events:results', args=(e.id,)))
+        return HttpResponseRedirect(reverse('helping_hands_app:results', args=(e.id,)))
