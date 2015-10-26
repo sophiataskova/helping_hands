@@ -1,0 +1,9 @@
+<h1>{{ event.event_text }}</h1>
+
+<ul>
+{% for choice in event.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'events:detail' event.id %}">Vote again?</a>

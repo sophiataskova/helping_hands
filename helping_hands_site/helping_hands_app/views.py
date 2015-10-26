@@ -1,9 +1,10 @@
 from django.shortcuts import render_to_response, render, get_object_or_404
 from django.template import RequestContext, loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
+from django.core.urlresolvers import reverse
 
-from helping_hands_app.models import Event
+from helping_hands_app.models import Event, Choice
 
 def index(request):
     latest_event_list = Event.objects.all().order_by('-pub_date')[:5]
@@ -15,7 +16,23 @@ def detail(request, event_id):
     return render(request, 'helping_hands_app/detail.html', {'event': event})
 
 def results(request, event_id):
-    return HttpResponse("You're looking at the votes of event %s." % event_id)
+    event = get_object_or_404(Event, pk=event_id)
+    return render(request, 'helping_hands_app/results.html', {'event': event})
 
 def vote(request, event_id):
-    return HttpResponse("You're voting on event %s." % event_id)
+    e = get_object_or_404(Event, pk=event_id)
+    try:
+        selected_choice = e.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the event voting form.
+        return render(request, 'events/detail.html', {
+            'event': e,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('events:results', args=(e.id,)))
