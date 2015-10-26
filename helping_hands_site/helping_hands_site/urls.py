@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'helping_hands_app.views.index', name='index'),
-    url(r'^events/', include('helping_hands_site.urls')),
+    url(r'^events/', include('helping_hands_site.urls', namespace="events")),
     url(r'^(?P<event_id>\d+)/$', views.detail, name='detail'),
     url(r'^(?P<event_id>\d+)/results/$', views.results, name='results'),
     url(r'^(?P<event_id>\d+)/vote/$', views.vote, name='vote'),
