@@ -13,6 +13,9 @@ import os.path
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath('__file__'))
 
+import django.contrib.auth
+django.contrib.auth.LOGIN_URL = '/'
+
 DATABASES = {
     'default': { 
         'ENGINE': 'django.db.backends.mysql', 

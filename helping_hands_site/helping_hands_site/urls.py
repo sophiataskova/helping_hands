@@ -13,6 +13,12 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
+    url(r'^$', 'django.contrib.auth.views.login'),
+    url(r'^logout/$', logout_page),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^register/$', register),
+    url(r'^register/success/$', register_success),
+    url(r'^home/$', home),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'helping_hands_app.views.index', name='index'),
     url(r'^events/', include('helping_hands_site.urls', namespace="events")),
