@@ -1,16 +1,19 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+import datetime
 
-Replace this with more appropriate tests for your application.
-"""
-
+from django.utils import timezone
 from django.test import TestCase
 
+from .models import Event
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+
+class EventMethodTests(TestCase):
+
+    def test_was_published_recently_with_future_event(self):
         """
-        Tests that 1 + 1 always equals 2.
+        was_published_recently() should return False for events whose
+        pub_date is in the future.
         """
-        self.assertEqual(1 + 1, 2)
+        time = timezone.now() + datetime.timedelta(days=30)
+        future_event = Event(pub_date=time)
+
+self.assertEqual(future_event.was_published_recently(), False)
