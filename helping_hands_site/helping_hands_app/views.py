@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_protect
 
 from helping_hands_app.models import Event, Choice
 
+register = None
+
 def index(request):
     latest_event_list = Event.objects.all().order_by('-pub_date')[:5]
     context = {'latest_event_list': latest_event_list}
