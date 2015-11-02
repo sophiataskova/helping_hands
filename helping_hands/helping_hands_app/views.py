@@ -3,13 +3,13 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.core.urlresolvers import reverse
-from helping_hands_app.forms import *
+from forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
 
 
-from helping_hands_app.models import Event, Choice
+from models import Event, Choice
 
 register = None
 

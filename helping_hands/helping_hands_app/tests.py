@@ -1,32 +1,36 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+# from django.core.management import setup_environ
+# from ..helping_hands_site import settings
 
-Replace this with more appropriate tests for your application.
+# setup_environ(settings)
 
+
+import datetime
+
+from django.utils import timezone
 from django.test import TestCase
 
+from helping_hands_app import models 
+from models import Event
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        
-        # Tests that 1 + 1 always equals 2.
-        
-        self.assertEqual(1 + 1, 2)
+
+# class EventMethodTests(TestCase):
+
+#     def test_was_published_recently_with_future_event(self):
+#         """
+#         was_published_recently() should return False for events whose
+#         pub_date is in the future.
+#         """
+#         time = timezone.now() + datetime.timedelta(days=30)
+#         future_event = Event(pub_date=time)
+
+# self.assertEqual(future_event.was_published_recently(), False)
+
 
 from selenium import webdriver
-
-browser = webdriver.Chrome()
-browser.get('http://localhost:8000')
-
-assert 'Django' in browser.title
-
-browser.quit()
-"""
-
-from selenium import webdriver
-from helping_hands_app.views import register
+from views import register
 import unittest
+
+
 
 class RegistrationTest(unittest.TestCase):  
 
@@ -54,5 +58,3 @@ class RegistrationTest(unittest.TestCase):
 if __name__ == '__main__':  
 	unittest.main()  
 #    unittest.main(warnings='ignore')  
-
-
